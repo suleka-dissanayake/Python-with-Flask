@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analyzer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.5.2/lux/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .result-box {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .result-box img {
+            max-width: 300px;
+            margin-top: 20px;
+        }
+        .sentiment-positive {
+            color: green;
+            font-weight: bold;
+        }
+        .sentiment-neutral {
+            color: yellow;
+            font-weight: bold;
+        }
+        .sentiment-negative {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Sentiment Analyzer</h1>
+        <p class="text-center">Enter a review to analyze its sentiment</p>
+        
+        <form method="POST">
+            <div class="form-group">
+                <textarea class="form-control" name="review" rows="5" placeholder="Write your review here..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Analyze Sentiment</button>
+        </form>
+
+        {% if sentiment %}
+        <div class="result-box">
+            <h3 class="{% if sentiment == 'Positive' %}sentiment-positive{% elif sentiment == 'Neutral' %}sentiment-neutral{% else %}sentiment-negative{% endif %}">
+                Sentiment: {{ sentiment }}
+            </h3>
+            <img src="{{ url_for('static', filename=image) }}" alt="{{ sentiment }}">
+        </div>
+        {% endif %}
+
+        <div class="text-center mt-4">
+            <a href="{{ url_for('bulk') }}" class="btn btn-secondary">Bulk Sentiment Analyzer Mode >> </a>
+        </div>
+
+    </div>
+
+    <footer class="text-center mt-5">
+        <p>&copy; 2024 Sentiment Analyzer by K.H.P.M.Gunarathna | Designed for analyzing product reviews</p>
+    </footer>
+</body>
+</html>

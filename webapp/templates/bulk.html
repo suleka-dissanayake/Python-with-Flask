@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk Sentiment Analyzer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.5.2/lux/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .result-box {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .result-box img {
+            max-width: 300px;
+            margin-top: 20px;
+        }
+        .sentiment-positive {
+            color: green;
+            font-weight: bold;
+        }
+        .sentiment-neutral {
+            color: #e3af20;
+            font-weight: bold;
+        }
+        .sentiment-negative {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Bulk Sentiment Analyzer</h1>
+        <p class="text-center">Input an eBay product URL to extract and analyze reviews</p>
+
+        <form method="POST">
+            <div class="form-group">
+                <input type="url" class="form-control" name="url" placeholder="Enter eBay product URL" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Extract Reviews</button>
+        </form>
+
+        {% if reviews %}
+        <div class="mt-4">
+            <h3>Reviews</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Review</th>
+                        <th>Sentiment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for review in reviews %}
+                    <tr>
+                        <td>{{ review.title }}</td>
+                        <td>{{ review.body }}</td>
+                        <td class="{% if review.sentiment == 'Positive' %}sentiment-positive{% elif review.sentiment == 'Neutral' %}sentiment-neutral{% else %}sentiment-negative{% endif %}">
+                            {{ review.sentiment }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h4 class="mt-4">Average Sentiment</h4>
+            <ul>
+                <li class="sentiment-positive">Positive: {{ avg_sentiment.Positive * 100 }}%</li>
+                <li class="sentiment-negative">Negative: {{ avg_sentiment.Negative * 100 }}%</li>
+                <li class="sentiment-neutral">Neutral: {{ avg_sentiment.Neutral * 100 }}%</li>
+            </ul>
+        </div>
+        {% endif %}
+
+        <div class="text-center mt-4">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary"> << Single Sentiment Analyzer Mode</a>
+        </div>
+    </div>
+</body>
+</html>
